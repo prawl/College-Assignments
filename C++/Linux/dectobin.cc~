@@ -1,0 +1,123 @@
+/*
+	Patrick Rawlings
+	CSCI 4630
+	Spring 2012
+	Assignment 2
+	2/27/12
+
+	Description:  This program reads in decimal numbers from a file called
+	dec.dat and produces their binary conversion to a output file bin.dat. The 
+	purpose of this program is to demonstrate the functionality of pipes in
+	a linux based system.  Dectobin (Acting as a controller)
+	will read in the data, pass the decimal data to another program called 
+	"dectohex.cc" which will convert the data into hexidecimal and them pass 
+	the hexidecimal result to another program called "hextobin.cc".  Hextobin
+	will then take it's data recieved via the pipe and convert the data into
+	binary.  Then it will pass it's result back to this program which will
+	write the result to a file.  
+
+	I/O format: The input will be recieved from a txt file called "dec.dat" and
+	the output will write to a file called "bin.dat"
+
+	Error Handling:
+
+	ASSUMPTIONS:
+	
+	Compiler Instructions: Used g++ compiler.
+
+*/
+//*****************************************************************************	
+
+using namespace std;
+#include <sys/types.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <iostream>   
+#include <string.h>
+
+
+main(int argc, char *argv[]){
+
+	//char output[100];			//Holds the info from the txt file.
+	//ifstream myFile;			//Initializes myFile.
+	//myFile.open("dec.dat"); //Opens file in myFile.
+/*	
+	if(myFile.is_open()){	
+
+		while(!myFile.eof()){
+	
+			myFile>>output;
+			cout<<output<<endl;		
+
+		
+
+		}//end while
+	
+	myFile.close();	
+	
+	}//end if
+
+	else{
+		cout<<"Error! Cannot find input file.  Make sure dec.dat exist."<<endl;
+	}//end else
+*/
+
+	pid_t pid;
+	char buf[256];
+	char input[256];
+	
+	int pfd[2];
+	pipe(pfd);
+	//int pipe_in[2]; //This pipe wit which we write to the child process.
+	//int pipe_out[2]; //This 	
+
+	FILE* inputFile = fopen("dec.dat", "r");
+
+	if (pipe(pipe_in) || pipe(pipe_out)){
+		perror("Pipe failed.\n");
+		exit(1);
+	}//end if
+
+	int x;
+	x = fork();
+	if (x == -1) { // fork failed
+		perror("Error! Fork failed!");
+		exit(1);
+
+	}//end if
+
+	if (x == 0) { // childs code
+		char temp[100];
+		int result;
+
+		close(pipe[1]);
+		dup2(pipe[1],0);
+
+		/*close(pipe_out[1]); //Position 1 holds write pipe, and the child will be reading now writing.
+		close(pipe_in[0]);
+	
+		read(pipe_out[0], buf, sizeof(buf));
+		close(pipe_out[0]);
+		*/
+
+
+
+		execl("./dectohex","./dectohex", NULL);	
+
+	}//end 
+	else{			  // parents code
+		while (fgets(input, 256, inputFile) != NULL) {
+			fprintf(stderr, "sending input: %s", input);
+			write(pipe_out[1], input, (strlen(input)));
+		}
+		fclose(inputFile);
+		//read(pipe_in[0], buf, sizeof(buf));
+
+
+	}
+	
+}//end main
+
+
+
+

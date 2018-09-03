@@ -1,0 +1,99 @@
+/*
+  Name:Patrick Rawlings
+  Class at ECU:3300-001
+  Assignment Due Date: 3/1/11
+  Assignment Number: Program 2
+  Professor: Dr. Ronnie Smith
+  
+  Description: The longest up sequence takes two user inputted numbers (one 
+  to fill array 1, and the other fill array 2) and uses a third array 
+  (reference array) to sort and find the upsequence of the data.  To achieve
+  the longest up sequence the program will look through the given array and 
+  pull out the numbers in sequential order, skipping the numbers who are not
+  included in the up sequence and then starting a new up sequence with those
+  skipped numbers.  The program then uses the longest up sequence in 
+  reference to the (reference array) to display the relation to second 
+  original array.  See end of program for examples.         
+*/
+
+#include <iostream>
+using namespace std;
+
+int main (){
+
+int const SIZE = 101; // Max size of the input arrays.
+int const [SIZE] = {0};/* Array used to hold the data for seqFinals.  
+							It Is prefilled with zeros to ensure there is not
+							some left over data in the memory location that 
+							this program is allocated and only test value 
+							we want to test and not some leftover data*/
+
+int distance[SIZE] = {0};/* Array used to hold the data for seqFinals.  
+							It Is prefilled with zeros to ensure there is not
+							some left over data in the memory location that 
+							this program is allocated and only test value 
+							we want to test and not some leftover data*/
+
+int reference [SIZE] = {0};/* Array used to hold the data for seqFinals.  
+							It Is prefilled with zeros to ensure there is not
+							some left over data in the memory location that 
+							this program is allocated and only test value 
+							we want to test and not some leftover data*/
+
+int seqFinals [SIZE] = {0};/* Array used to hold the data for seqFinals.  
+							It Is prefilled with zeros to ensure there is not
+							some left over data in the memory location that 
+							this program is allocated and only test value 
+							we want to test and not some leftover data*/
+
+int tempNum = 1;/* Users temp array size using the EOF command.  Starts at 1 
+					because we do not use position 0.also becuase we were 
+					instructed to only start the use of the arrays a position 
+					1 of the array and not position 0. that is what the boss 
+					wanted*/
+	
+
+for (int i = 0; i <SIZE; i++)
+{
+	reference[i]=i;
+}
+
+while (!cin.eof())
+{
+cin>>cost[tempNum];
+cin>>distance[tempNum];
+tempNum++;
+}
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/**************************************************************************/
+/*  PROGRAM ASSIGNMENT
+
+*/
+

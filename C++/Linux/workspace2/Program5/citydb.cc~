@@ -1,0 +1,631 @@
+/*
+  Name:Christopher M West, Patrick Rawlings
+  Class at ECU:3300-001
+  Assignment Due Date: 11-19-10
+  Assignment Number: Program 4
+  Professor: Dr. Ronnie Smith
+  
+  Description: The purpose of the program is to allow the user to edit/delete
+  information in a database from a preset list of choices.  The program reads
+  a list of data from a text file and stores it into the buffer which then is 
+  organized into link list.  Once the data is in the link-list the user can
+  alter and display the data.  To achieve this, a function is set to perform
+  each option.
+  1) "delete a city", 2) "give the capital", 3) "list cities of a state",
+  4) "list all cities in the database" and 5) "quit the program."        
+*/
+
+
+#include <iostream>
+#include <fstream>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+using namespace std;
+
+const int BUFFERSIZE = 512; // Limits the buffer size.
+
+struct CityNode {
+  char *name;    // Holds name of city.
+  char *state;   // Holds State.
+  bool isCapital;// Reports if city is captial of state.
+  int pop;       // Holds the population of a city.
+struct CityNode *next;
+
+CityNode() // default constructor.
+  {
+    name = state = NULL;
+    isCapital = false;
+    pop = 0;
+    next = NULL;
+  }
+};
+
+typedef CityNode* PtrType;
+
+//#define DEBUG
+bool debugON = false;// global debugging flag.
+
+// Prints all the data of one node.  This is necessary to print each node in 
+// sucession.
+void displayNode(PtrType& head) 
+{	  
+	if(head->next!=NULL){ // checks for empty list.
+	 if (head->isCapital==true){ // Prints capital
+		cout<<head->name<<", "<<head->state<<" population "
+		  <<head->pop<<" (capital)"<<endl;}
+	else {cout<<head->name<<", "<<head->state<<" population "<<head->pop<<endl;}  // Does not print capital.
+	}
+}
+
+// Function for implementing option 4, list all cities on the list.
+void displayList(PtrType& prev)
+{
+	bool finished=false;
+	cout<<endl;
+	PtrType head= prev->next;
+			
+	while (!finished) // Displays the list until NULL is reached.
+	{	
+	displayNode(head);
+	head = head->next; 
+
+		if (head==NULL||head->next == NULL) 
+		{
+		finished=true;
+		}
+	}
+	cout<<endl;	
+}
+// Menu for user interaction. 
+void displayMenu()
+{
+   	cout<<"** U.S. City Information Program **";
+	cout<<endl<<"(Enter number of choice and RETURN)";
+	cout<<endl;
+	cout<<endl<<"1)  Delete a city";
+	cout<<endl<<"2)  Give the capital of a specified state";
+	cout<<endl<<"3)  List all cities from a specified state";
+	cout<<endl<<"4)  List all cities in the database";
+	cout<<endl<<"5)  Quit the program"<<endl;
+}
+
+// Initializes list containing database and returns pointer to
+// the start of the list.  Input stream is specified by input
+// and will already be defined.
+PtrType initialize(ifstream & input)
+{
+   char buf[BUFFERSIZE];
+   char *bufptr = buf;
+
+// Set first to point to the dummy node at the front of the list.
+// Values set by default constructor includes NULL pointer.
+
+   PtrType current = new CityNode;
+   //cout<<"Debug: Displaying the origin Pointer Value here "<<current->next<<endl;
+   PtrType head = NULL; 
+   PtrType nextNode = NULL;
+   head=current; 
+   int capitalTest;
+
+   while (input.getline(bufptr,BUFFERSIZE)) // capture data to fill the linklist
+   {
+	
+	nextNode = new CityNode; // Creates a new node while.
+	//cout<<"Debug: Displaying the Pointer Value here "<<nextNode->next<<endl;
+	current->name = strdup(bufptr); /* populate feild of the dynamic stuct with 
+		 a duplicate of the buffer by returning a pointer to that duplicate */
+
+	input.getline(bufptr,BUFFERSIZE);  
+   current->state = strdup(bufptr); /* populate feild of the dynamic stuct with 
+		 a duplicate of the buffer by returning a pointer to that duplicate */
+
+	  input.getline(bufptr,BUFFERSIZE);
+	  capitalTest=atoi(bufptr);	
+	     if(capitalTest == 1) /* determine if the bool should be set to True or False*/
+	     {
+	     current->isCapital = true;
+	     }
+	     else  
+	     {
+	     current->isCapital = false;
+	     }
+
+	  input.getline(bufptr,BUFFERSIZE); 
+     current->pop = atoi(bufptr);/* populate feild of the dynamic stuct with 
+		 a integer value of the data in the buffer*/
+
+		//cout<<"Debug: Displaying the origin Pointer Value here "<<current->next<<endl;
+		current->next=nextNode;//  assign new node to tail of current node
+	  current=nextNode; /*reassign the varilable to the new empty node to 
+		  								be filled*/
+		//cout<<"Debug: Displaying the Pointer Value here "<<nextNode->next<<endl;
+    }
+	// cout<<"Debug: Displaying the origin Pointer Value here "<<current->next<<endl;
+	current->next=NULL;/* once finished with list creation seal the end 
+	  									pointer with a NULL*/
+	//printf("Pointer to next Node After: %p \n ",current->next); // a different way to printout pointers
+
+#ifdef DEBUG 
+  if (debugON)
+  {
+    cout << "list after reading the input file\n";
+	 displayList(head); 
+  }
+#endif
+	
+	PtrType mtyNode = new CityNode;//comment out
+	mtyNode->next=head;//comment out
+	head=mtyNode;//comment out
+ 
+  return head;
+}
+
+// Function for implementing option 2.  It searches through the linked-list for the inputted
+// state and if the state has the capital with it, it will report that capital. 
+void findCapital(PtrType head,string input)
+{
+	if(head->next!=NULL) // Not finished.
+	{
+		
+		if (!(input == head->state))
+		{				
+				findCapital(head->next,input); // 1) Elegant Recursion.
+		}
+			else if(head->isCapital!=true)
+			{
+				findCapital(head->next,input); // 2) Elegant Recursion.
+			}	 
+		
+		 else if(head->isCapital==true)
+		{
+			displayNode(head);	
+			
+		}
+	}
+	if(head->next==NULL)// if no capital is found the tell the user
+	{
+		 cout<<endl<<"Did not find a Capital for the state of "
+			  <<input<<" in this database."<<endl;
+	}
+}
+
+// Function for implementing option 3.  It finds the state specified in the list recursively
+// while reporting the cities with the respective state.
+void find_state(PtrType head,string input, bool finished)
+{
+	if(head->next!=NULL) // Not finished.
+	{
+		
+		if (!(input == head->state)) // Not correct answer.
+		{				
+			find_state(head->next,input,finished);// 3) Elegant Recursion.
+		}
+		else if(input ==head->state) // Correct answer.
+		{
+			displayNode(head);	
+			
+			if(head->next!=NULL) // Check if whole node has been searched.
+			{
+				finished=true;
+				find_state(head->next,input,finished);// 4) Elegant Recursion.
+			}	 
+		}
+	}
+	else if(finished==false||head->next!=NULL) // Finished.
+	{
+		cout<<endl<<"Did not find any Cities in the state of "
+			  <<input<<" in this database"<<endl;
+	}
+}
+
+// Function for implementing option 1.  It find the node specified and deletes 
+// the entire node with all of its contents while linking the previous node to the
+// next node.
+void delete_node(PtrType& prev,string inputCity)
+{
+
+
+	 if(prev!=NULL && prev->next->next!=NULL) // Not finished.
+	 {
+		PtrType head=prev->next;
+			
+			if (!(inputCity == prev->next->name)) // Did not find match.
+			delete_node(prev->next,inputCity);// 5) Elegant Recursion.
+
+				else // Found match!  Now delete it.
+				{
+				//cout<<"Debug: Found city name!"<<endl;
+				PtrType tmpNode = prev;
+				tmpNode->next=head->next;
+			 	if(head->next==NULL) tmpNode->next=NULL;
+				delete []head->name; 
+				delete []head->state;
+				delete head;
+				cout<<"The city was successfully deleted."<<endl<<endl;				
+				}
+	 }
+	 else // Finished and did not find match.
+	 {
+	  cout<<"The city you entered is not in the list being examined."
+	  <<" The city you were looking for was: "<<inputCity<<endl;
+	 }
+	
+}
+// Function for getting user input.  It is necessary to account for any empty spaces
+// in a string.  i.e. north carolina.
+string getInput(string someOutput)
+{
+  string userInput;
+  cout<<someOutput<<endl;
+  getline(cin,userInput,'\n');//this will get the whole line instead 
+	  		      //of one word delimited by a space.
+  cout<<endl;
+  return userInput;
+}
+
+// Main holds the interactive display for the user.
+int main(int argc, char *argv[])
+{
+ ifstream city_input;
+ PtrType head;        // Pointer to node head.
+ char buffer[BUFFERSIZE];
+ string outPut2User;  // Holds data to prompt user.
+ bool isFound=false; // Needed to test (the if found condition) for finding states.
+
+  if(argc > 1) // open file and initialize database.
+  {
+   (city_input.open(argv[1]));
+   head = initialize(city_input);
+  }
+  else 
+   head = NULL; // initialize to empty.
+
+  // specify code for menu display and processing of choice.
+
+  bool finished = false;
+  while (!(finished))  // display entire menu until program is killed.
+  {
+	displayMenu();// interactive menu display.
+
+	#ifdef DEBUG2
+	  if (debugON2)
+	  {
+	    cout << endl<<"Current list size"<<curCnt<<endl;
+
+	  }
+	#endif
+   cin.getline(buffer,BUFFERSIZE);
+   int choice = atoi(buffer);
+	
+// code for choosing correct functionality based on menu choice goes here.
+	switch(choice)
+	{
+
+	case 1:{ // Option 1: Delete Node.
+		  outPut2User="Enter the city you wish to delete.";
+		  delete_node(head,getInput(outPut2User));
+		  break;
+		}
+					  
+	case 2:{ // Option 2: Find Capital.
+		  outPut2User="Enter a state to find its capital.";
+		  findCapital(head->next,getInput(outPut2User));
+		  cout<<endl;
+		  break;
+		}
+					  
+	case 3:{ // Option 3: List all cities from specified state.
+		  outPut2User="Enter a state to find its cities. ";
+		  find_state(head->next,getInput(outPut2User),isFound);
+		  cout<<endl;
+		  break;
+		}
+					  
+	case 4:{ // Option 4: List all information in database.
+		if(head==NULL&&head->next==NULL)break;
+		    else{
+			  displayList(head);
+			  break;
+			   	     }
+			}
+					  
+	case 5:{ // Option 5: Quit the program.
+		  finished=true;
+		  break;
+		
+		}
+	}
+ }	
+return 0;
+}
+/**************************************************************************/
+/*  PROGRAM ASSIGNMENT
+                                  Computer Science 3300
+                                              Program 4
+DUE: Friday November 19, 5:00 P.M.
+Reference Template: http://www.cs.ecu.edu/~rws/c3300/p4/citydb.cc
+Problem Description
+You are still the programmer at the Extremely Creative Undertakings (ECU) 
+travel agency. Your manager now wants you to develop a simple database of 
+basic information about U.S. cities as well as a simple interface for 
+accessing the database as detailed in the specification. A program template 
+will be provided that has essential declarations as well as code for being able
+to specify the name of the input file containing the database as a command 
+line argument.
+
+Input/Output Requirements
+     1. The initial database of information about cities will be read from a 
+			file whose name will be given as the first command line argument. The 
+			information about each city is stored in four successive lines as 
+			follows:
+	 
+              a. Line 1: the name of the city (all letters will be lower case)
+              b. Line 2: the state (all letters will be lower case)
+              c. Line 3: a 1 if the city is the capital of the state, 
+				  					otherwise a 0
+              d. Line 4: the cities’ population (integers only, no commas)
+         An example of a valid input file is given below 
+			(the populations are of course, estimates)
+			
+         akron
+         ohio
+         0
+         217074
+         asheville
+         north carolina
+         0
+         76636
+         cleveland
+         ohio
+         0
+         431369
+         nashville
+         tennessee
+         1
+         605473
+         raleigh
+         north carolina
+         1
+         405612
+                                                      1
+        The code for processing the input file name is part of the program 
+		  template. If your executable file is named a.out and the input file is 
+		  named sample.txt, you would use the following command to start your 
+		  program and initialize the database using the information in sample.txt.
+
+		  a.out sample.txt
+				 
+        The code in the program template will process the command line argument 
+		  and setup the program to read from the file when initializing 
+		  the database.
+				 
+    2.  All input from the file will initially be read line by line and stored 
+		  in a character buffer. You must properly use the strcpy command in 
+		  conjunction with dynamic memory allocation to make copies of the input 
+		  information for city and state and store it in the database.
+				 
+    3.  Use the function int atoi(char *buffer) to convert the strings for line 
+		  three and four into numbers for further processing. For example, the 
+		  call atoi(“738”) would return the integer value 738 based on the string 
+		  input “738”.
+			  
+    4.  One of the program features is the ability to display information about 
+		  all the cities of a state and all the cities in the database. Use the 
+		  following format when displaying the information. Reference values are 
+		  from the sample input file given above.
+				
+        akron, ohio population 217074
+        cleveland, ohio population 431369
+        asheville, north carolina population 76636
+        raleigh, north carolina population 405612 (capital)
+        nashville, tennessee population 605473 (capital)
+
+
+User Interface Requirements
+		  Once your program has read and stored the information about cities from 
+		  the output file, it should enter a loop driven by interactive input 
+		  where the input choices are provided by a menu. The format of the menu 
+		  is the following.
+				
+                                    ** U.S. City Information Program **
+                                    (Enter number of choice and RETURN)
+                                    1)  Delete a city
+                                    2)  Give the capital of a specified state
+                                    3)  List all cities from a specified state
+                                    4)  List all cities in the database
+                                    5)  Quit the program
+													 
+		After reading the user choice, you should specify a multiway conditional 
+		using either the if statement or switch statement. Each separate option 
+		(except for option 5), should invoke a function call that implements the 
+		specified option. Details about each option are described next.
+			 
+                                                         2
+		Option 1: delete a city. Prompt for the name of the city and the state. 
+		If the city is not found in the database, produce an appropriate warning 
+		message. If the city is found, produce an appropriate confirmation 
+		message.
+			 
+      Option 2: give the capital. Prompt for the name of the state. Produce an 
+	   appropriate warning message if that city is not found. If the city is 
+	   found, display the output for the city in the format given in item 4 of 
+	   the Input/Output Requirements. 
+
+	   Option 3: list cities of a state. Prompt for the name of the state. 
+	   Produce an appropriate warning message if there are no cities from that 
+	   state in the database. Otherwise, display using the appropriate output 
+		format as previously specified.
+			 
+		Option 4: list all cities in the database. Follow the output format 
+		previously specified. 
+			 
+Data Structure Requirements
+		The database is to be maintained using a linked list implementation. The 
+		list should be organized so that all cities from a given state are 
+		adjacent in the list, and the cities within a given state are in 
+		alphabetical order. The order of the sample output listed above is based 
+		on using this organization scheme for the sample input. The definition 
+		of the node structure required is provided in the program template.
+			 
+Algorithmic Requirements
+		Your program requires the functionality to add new cities, delete cities, 
+		search for cities, and traverse the entire list. Specific requirements in 
+		regards to these various functionalities are described next.
+			 
+      	Adding cities to the list. 
+
+			 The first step will be to search the list  and return a pointer to 
+			 the node that precedes where the new city might be inserted. This 
+			 means you need a function that searches for the first node in the 
+			 list for a given state and returns the pointer to the node that 
+			 precedes that first node. For example, given the sample input file 
+			 already specified, when it is time to add the information for 
+			 Raleigh, North Carolina, your search routine should return a pointer 
+			 to the node for Cleveland, Ohio. Once you’ve found the location in 
+			 the list where the cities for the current state are stored, then you 
+			 can search that sublist for the precise location for adding the new 
+			 city. Note the implication that information about new states will be 
+			 added to the list after information about states already included in 
+			 the list. 
+
+			Deleting cities from the list. 
+
+			 As with add, you need a pointer to the node that precedes the one you 
+			 need to delete. You can use the same function for finding the first 
+			 node in the list for a given state, then search the sublist.
+
+			 
+        	Searching for the capital. 
+
+			 Once again, the function that finds the first node for the cities of 
+			 the specified state will come in handy.
+			 
+        	List cities of a state. Guess what helper function is useful here too?!
+			 
+        	List all cities in the database.
+			 
+			 A simple list traversal is all that is needed. A helperroutine that 
+			 prints the information for a single CityNode will be helpful.
+
+			 											3
+Debugging Requirements
+
+		Professional software designers write their programs for testing, 
+		right from the start. They do everything they can to make them work, but 
+		then presume that there will be problems. (There usually are.) The idea 
+		is not to wait until problems show up to think about testing. Think about 
+		it from the beginning.
+			 
+		One way to think about testing from the start is to build in tracing 
+		capabilities. If you write
+			 
+    #ifdef DEBUG
+      if(debugON)
+      {
+         cout << "List after reading the input file\n";
+         displayNode(first);
+      }
+    #endif
+
+		
+		inside your function initialize that will initialize the database by 
+		reading the file of information and constructing the linked list 
+		(see program template), then you make initialize show what it has done. 
+		This assumes that displayNode is your function for printing the 
+		information about every city in a list and that first is the pointer to 
+		the first node (i.e. head) of the list Of course, you do not always want 
+		it to do that. So you have two switches to turn it on or off.
+			 
+     1. If you have written
+
+				#define DEBUG
+         		then the part between #ifdef DEBUG and #endif will be compiled 
+			 		into the program. But if you do not write that, or write
+            //#define DEBUG
+			 
+         then the compiler will ignore the part between #ifdef DEBUG and 
+			#endif, and it will be as if that part were not part of the program 
+			at all.
+			 
+     2. Variable debugON has type bool. If it is true, then the trace will be 
+			shown (assuming it
+         has not been skipped over by the compiler.). If tracing is false, 
+			nothing is shown. Using this idea, add debug prints to your function 
+			for option 2, deleting a city, showing the contents of the list at the 
+			beginning and at the end of the function. But make sure that it can be
+			turned off. Never print raw information, such as numbers. Always say 
+			which function is showing it, and what it represents. You may also 
+			want to add the same mechanism to the initialize function to show how 
+			the list changes each time a new city is added.
+
+			When you turn in your program, do not remove the debug prints. 
+			The point is to leave them in the program so that they can be turned 
+			on when they are needed. But ensure that debug prints are turned off 
+			in the version that you submit.
+                                                       4
+Technical Issues
+			No other global declarations other than those specified in the 
+			template are allowed. One operation that you will use frequently in 
+			this program is the comparison of two strings. The <string.h> library 
+			function int strcmp(char *s1, char *s2) can be used to do this. When 
+			string s1 and string s2 are equal, the function returns 0. If s1 
+			alphabetically precedes s2 (e.g., s1 = “asheville” and s2 = “raleigh”) 
+			the function returns a negative integer. If s1 alphabetically follows 
+			s2, the function returns a positive integer. For more information type 
+			the command man strcmp at the command line.
+
+			You should use a statement of the form cin.getline(<buffer>,<maxchar>) 
+		   for all interactive input, both menu choices, and for the names of 
+			states and cities. You may want to use int atoi(char *s) to convert a 
+			menu choice to an integer for testing, or else use strcmp as described 
+			above. You can use the design specified in the program template for 
+			the interactive menu.
+
+			As we’ve seen in class, handling empty lists and other boundary cases 
+			is important, but sometimes tedious. Because the operations in this 
+			program frequently require a pointer to the previous node in the list, 
+			handling the first item on the list can be technically challenging. To 
+			simplify this, a good strategy is to create a dummy first node that 
+			has no information about any city, but simply acts as a pointer to the 
+			first node that actually contains data. The program template 
+			illustrates this in the PtrType initialize(ifstream & input) function. 
+			You should use this design. Remember to pass the correct pointer to 
+       	displayNode whenever you want to list all the cities.
+
+			Besides main() and initialize(), your program must contain the 
+			following functions as a minimum.
+				 
+           1. Your primary function for processing options 1-3.
+				 
+           2. PtrType find_state(char *name ,PtrType head), a helper function 
+					that searches the linked list pointed to by head and returns a 
+					pointer to the node that immediately precedes the first node 
+					containing information about cities from the state specified in 
+					the string parameter name. It should return NULL if the list is 
+					empty. A recursive specification is particularly elegant.
+					
+           3. void displayNode(PtrType nodePtr) that displays the information 
+					for the city whose node is pointed at by nodePtr.
+					
+           4. void displayNode(PtrType head) that displays the information 
+					about every city in the list whose first node is pointed at by 
+					head. It should use displayNode, and it will also be useful in 
+					debugging.
+					
+       	You may define additional helper functions as desired.
+					
+Program Deadlines and Submission Information
+					
+       	The deadline for final submission of the completed assignment is 
+			5:00 P.M. on Friday November 19.
+					
+       Use the <assignment_number> p4 for the submission.
+					
+       Use the name citydb.cc for your program file.
+					
+       Follow the submission guidelines in the Programming Standards handout.
+                                                  5
+
+*/
+

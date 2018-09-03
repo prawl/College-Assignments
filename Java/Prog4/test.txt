@@ -1,0 +1,12 @@
+A = 100
+C = 2
+E = 20
+
+$PART2
+C-(B+(C+(A-E)))-X
+A*D*C+A
+(A-D)*(E-C)
+(D+C)-(H*X-C)
+(A-H)/(D+B)
+A*H+C
+

@@ -1,0 +1,565 @@
+/*
+  Name: Patrick Rawlings
+  Class at ECU:3300
+  Assignment Due Date: 4/27/11.
+  Assignment Number: Program 5 (p5)
+  Professor: Dr. Ronnie Smith
+ 
+  Description:
+  This program takes in data from a file (south.txt) that is formatted with data
+  like below:
+
+	this program can either bring the data into a binary search tree like it is
+	are the file is laid out or can bring in the data sort it alphabetically and
+	then create a balanced binary search tree with the shortest depth.
+	
+	this program presents a menu of 7 question to interact with the data just 
+	brought into the tree structure. It use nodes for the tree an encapsulates
+	the inputted data pairs into a struct inside each node.
+	
+	the tree can be outputted to the screen either as inorder(alpha-order),
+	preorder, or postorder traversal of the tree.
+	
+	the tree can be searched to determine if data entered by the user at the 
+	prompt matches what is in the tree structure.
+	
+	the output is either outputted as formated or unformated based on the need
+	to do so.
+*/
+#include <iostream>
+#include <fstream>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <math.h>
+#include <iomanip>//not in base template, aded for formatting needs.
+#include <limits>//not in base template, added for formatting needs.
+
+using namespace std;
+
+const int BUFFERSIZE = 512;// use for buffer size
+#define DEBUG
+bool debugON = false; // global debugging flag
+
+typedef string KeyType;
+
+//****************************************************************************
+//This Struct is use as a part of the TreeNode Struct below. We are creating a
+//definition of an complex-dataType which consist of two different primative 
+//data types. This is the foundation of objects in object-oriented 
+//programming languages. A struct with functions is-a class (object)
+struct TreeItem 
+{
+KeyType school; // Holds the schools name.
+string division;// Holds the schools conference (ie. north, south etc.)
+int gamesWon; // Holds wins.
+
+	TreeItem() // Constructor is setting default values.
+	{
+	school= "";
+	division = "";
+	gamesWon = 0;
+	}
+};
+//*****************************************************************************
+//This Struct was defined pre-created in the project template. It is the
+//building blocks of a binary search tree with default constructors.
+struct TreeNode {
+  TreeItem item;
+  TreeNode * left;
+  TreeNode * right;
+
+  TreeNode(TreeItem value, TreeNode * lval, TreeNode * rval) 
+  {
+    item = value;
+    left = lval;
+    right = rval;
+  }
+TreeNode()//base case empty node: set everything to empty , Zero or NULL
+	{
+		item.school;
+		item.division="";		
+		item.gamesWon=0;
+		left=NULL;
+		right=NULL;
+	}
+};
+
+typedef TreeNode * TreePtr;
+
+//*****************************************************************************
+/* 
+	This nice little function is to seperate the menu and the last responce to 
+ 	the choice that was made. it is the result of the iomanip library we needed 
+ 	to format the printItem to right justify the school name. so we decided to 
+ 	use it again to help cleanup the presentation of the screen output and make 
+ 	it easier to read instead of jumbled looking.
+*/
+void printSpacer()
+{
+	cout<<endl<<setw(79)<<setfill('*')<<" "<<endl;//create a line of'*'
+	cout<<setw(79)<<setfill(' ')<<" "<<endl; //reset the setfill to empty space
+}
+/*****************************************************************************/
+//This is a balanced insertNode by using a sorted TreeItem array an grabs the 
+//middle position to insert at the root of the tree to create a balance binary 
+//search tree irregardless of how the data was brought into the program.
+//this will create the shallowest tree of the two types created in this program
+//and shallow means faster search capable than an unbalanced tree.
+//this matters on very large trees.
+
+TreePtr makeTree(TreeItem data[],int first,int last)
+{
+	int middle=0; 
+	TreePtr root=NULL;// create first node but empty	
+	if (first<=last) 
+	{
+		middle=(first+last)/2;// Keep track of middle in order to main order.
+		root=new TreeNode(data[middle],NULL,NULL);//insert data in a new spot
+		root->left=makeTree(data,first,middle-1);//fill the left subtree
+		root->right=makeTree(data,middle+1,last);//fill the right subtree
+	}
+	return root;//return the completed binary tree root pointer
+}
+//*****************************************************************************
+//This is a simple function that prints out the contents of the current item.
+// This includes the school, division, and games won.
+
+void printItem(TreeItem item)
+{
+cout << setiosflags(ios::right);// set right alignment of
+cout<<setw(20)<<item.school<<":\t"<<item.division<<" division"<<"/"
+<<item.gamesWon<<" wins"<<endl;
+}
+//**************************************************************************** 
+/* 
+	This is a way to insert into the tree alpha order of nodes where anything
+	that is before the root of the tree alphabeticlly is sent to the left subtree
+	for entry and those after root are sent to the right subtree for entry.
+	this desicion making is done on every new recursive call down in the tree 
+	until the node is placed into the tree.
+	this is used for startup option 1.
+*/
+void insertItem (TreePtr &root, TreePtr &newNode)
+{
+	if(root==NULL)		// found a place to insert node
+	{
+		root = new TreeNode(newNode->item,NULL,NULL);
+	}    
+	else if(newNode->item.school.compare(root->item.school)<0)
+	{
+		insertItem(root->left, newNode);//have not found home 4 this node go left
+	}
+	else if(newNode->item.school.compare(root->item.school)>0)
+	{
+		insertItem(root->right, newNode);//have not found home 4 this node goright
+	}
+}
+
+//****************************************************************************
+/*
+	(OPTION 1)
+	This funtion will print the team information (name, division, wins) upon
+	a search request of a team name.  The function searches through the entire 
+	tree, and if the users matches the item it will print that item out. 
+*/
+
+bool teamInfo(TreePtr root, string input, bool done)
+{
+	if (root == NULL)
+	{
+	cout<<endl<<"Did not find '"<< input <<"' in the database."<<endl<<endl;
+	return false;
+	}
+
+	else if(input==root->item.school) // Item found.
+	{	
+	printItem(root->item);// found the school print it out to user
+	cout<<endl;
+	}
+	
+	else if(input<root->item.school) // Go left.
+	{
+	return teamInfo(root->left,input, done);
+	}
+	
+	else // Go right.
+	{
+	return teamInfo(root->right,input, done);//not found yet look to the right
+	}
+}
+
+//***************************************************************************
+/*
+	(OPTION 2)
+	This function, which is similar to teamInfo funciton, will look through
+	the entire list and if a particular team is apart of a division it will
+	print the teams information out.  The input is the  
+*/
+
+void divisionWins (TreePtr root, string input)
+{
+	if (root != NULL)
+	{
+	divisionWins(root->left, input);	// Go left.
+	
+		if( root->item.division.compare(input) == 0) // Item found.
+		{		
+		printItem(root->item);
+		}	
+		
+	divisionWins(root->right, input); // Go right.
+	
+	}
+}
+
+//****************************************************************************
+/*
+	(OPTION 3)
+	After receiving the answer to the question of what school to find the score 
+	of do a traversal of the tree to find the school. if found during the 
+	recursion call printItem w/o formating or an empty leaf is empty leaf 
+	is encountered then exit the funtion and printout a not found message
+*/
+void gamesWon(TreePtr root, int input)
+{
+	if (root == NULL) // No items.
+	{
+	return;	
+	}
+
+	gamesWon(root->left, input); // Go left.
+	
+		if(root->item.gamesWon > input) // Item found.
+		{
+		printItem(root->item);
+		}
+	
+	gamesWon(root->right, input); // Go right.
+}
+
+//****************************************************************************
+/* 
+	(OPTION 6)
+	Measure the depth of the binary search tree or any binary tree and return 
+	the result of the depth as a whole number
+*/
+int treeHeight(TreePtr root) 
+{
+	if (root==NULL) 
+	{
+		return(0); //have found end of tree on this branch (NULL Leaf)
+	}
+	else 
+	{
+		return 1 + max(treeHeight(root->left), treeHeight(root->right));
+	}
+}
+
+//****************************************************************************
+/*
+	(OPTION 4)
+	Traverse the entire tree and on the recusive collapse call printItem 
+	formatted until the entire tree is traversed
+*/
+void postOrderTraverse(TreePtr root)
+{
+	if (root!=NULL)
+	{
+		postOrderTraverse( root->left );	// Print items in left subtree.
+		postOrderTraverse( root->right );// Print items in right subtree.
+		printItem(root->item);	 			// Print the root item.
+	}
+}
+//****************************************************************************
+/*
+	(OPTION 5)
+	Call printItem formatted then traverse the entire tree recusivively on each 
+	recursive iteration call printItem formatted and recurse again until the 
+	entire tree is traversed
+	
+*/
+void preOrderTraverse(TreePtr root)
+{
+	if (root!=NULL)
+	{
+		printItem(root->item); 			  // Print the root item.
+		preOrderTraverse( root->left ); // Print items in left subtree.
+		preOrderTraverse( root->right );// Print items in right subtree.
+	}
+}
+
+//*****************************************************************************
+ /*
+	This funtion receive a string to ask the user for input. Then returns that 
+	input as a string object. this one funtion is used for two menu choices
+	in this program
+*/
+
+string getInput(string userOutPut)
+{
+	cout<<userOutPut<<endl;	//output to user...ask a question
+	string userInput;
+	getline(cin,userInput,'\n');	//this will get the whole line instead 1 word 
+	cout<<endl;							//space formating
+	return userInput;					// is that your final answer?
+}
+
+//****************************************************************************
+/*
+	Simple but effective sorting algorithm to sort string variables int a struct
+	datatype. the items being compared are item[int].school. This sort is being 
+	implemented on an array of type TreeItem.
+*/
+void selectionSort(TreeItem item[], int arrayPopulatedSize) 
+{
+	int outerIndex; 
+	int innerIndex;
+	int refIndex; 
+	TreeItem tmpItem; //used for the swaping around in the array
+	// sort array eliminating the top(0) index after each iteration    
+	for (outerIndex = 0; outerIndex < arrayPopulatedSize ; outerIndex++) 
+	{
+		refIndex =outerIndex;
+		for (innerIndex = outerIndex + 1; innerIndex < arrayPopulatedSize;
+				innerIndex++)
+		{
+			if (item[innerIndex].school < item[refIndex].school)
+			{
+				refIndex = innerIndex;	// mark as best to move to top of current 
+												// indexed list
+			}
+		}
+		/* 
+			at the end of one complete iteration through the array move 
+			the smaller item to the begining of the array segment that is 
+			being compared only if it needs to be moved.
+		*/
+		if (refIndex != outerIndex)
+		{
+			tmpItem = item[outerIndex];
+			item[outerIndex] = item[refIndex];
+			item[refIndex] = tmpItem;
+		}
+	}
+}
+
+//****************************************************************************
+
+// Top level function for option 1 for building the database
+// db_input is connected to the external file to be read using the getline
+// command.
+// returns pointer to constructed binary search tree.
+
+TreePtr fileInit(ifstream & db_input)
+{
+	char buf[BUFFERSIZE];
+	char *bufptr = buf;
+	TreePtr current = new TreeNode;
+	TreePtr root = NULL;
+	TreePtr nextNode = NULL;
+	root =current;
+	char* name;
+	char* division;
+	int tmpNum=0;
+   /*	this is to get the data for the first node then determine where 
+		the next node should be placed*/
+	db_input.getline(bufptr,BUFFERSIZE);
+	name = strdup(bufptr);		// grab buffer as char array
+	current->item.school=name;	// fill this node's school with it's 
+										// name
+	db_input.getline(bufptr,BUFFERSIZE);
+	division = strdup(bufptr);
+	current->item.division = division;
+
+	db_input.getline(bufptr,BUFFERSIZE);
+	tmpNum=atoi(bufptr);				// grab buffer as integer
+	current->item.gamesWon=tmpNum;// fill this node's number of games 
+											// won with the total for that school
+	while (db_input.getline(bufptr,BUFFERSIZE))// capture data to fill this 
+																// node until end of file
+	{
+		#ifdef DEBUG
+		if (debugON)
+		{
+			printItem(current->item);	// this was for debug
+			// Does not print last line but it is there.
+		}
+	#endif
+
+	
+		nextNode = new TreeNode;		// only create a node it needed i.e. 
+												// somthing in buffer
+		current=nextNode;
+
+		//db_input.getline(bufptr,BUFFERSIZE);
+		name = strdup(bufptr);			// grab buffer as char array
+		current->item.school=name;		// fill this node's school with it's 
+												// name
+		db_input.getline(bufptr,BUFFERSIZE);
+		division = strdup(bufptr);
+		current->item.division = division;		
+		
+		db_input.getline(bufptr,BUFFERSIZE);
+		tmpNum=atoi(bufptr);				// grab buffer as integer
+		current->item.gamesWon=tmpNum;// fill this node's number of games 
+										// won with the total for that school
+		
+		insertItem(root,current);		// function call     
+	}
+
+	return root;
+}
+//*****************************************************************************
+/* 
+	Top level function for option 2 for building the database 
+	db_input is connected to the external file to be read using the getline
+	command returns pointer to constructed binary search tree.
+*/
+TreePtr sortInit(ifstream & db_input)
+{
+	char buf[BUFFERSIZE];// create a character buffer for data input
+	char *bufptr = buf;
+	TreeItem current [65];
+	TreeItem tmpTreeItm;
+	char* name;	// used to temporary hold the school's name b4 adding 
+					// to a new TreeItem
+	int tmpNum=0;
+	int index=0;
+	char * division;	
+	
+	//load the array from the file(south.txt) at program start
+	while (db_input.getline(bufptr,BUFFERSIZE)) // capture data to fill this 
+															// node until end of file
+	{  
+		#ifdef DEBUG
+		if (debugON)
+		{
+			printItem(tmpTreeItm);	// this was for debug
+			// Does not print last line but it is there.
+		}
+		#endif
+
+	  
+		name = strdup(bufptr);					// grab buffer as char array
+		tmpTreeItm.school=name; 				// fill this node's school with it's 
+														// name
+		db_input.getline(bufptr,BUFFERSIZE);
+		division = strdup(bufptr);
+		tmpTreeItm.division = division;
+	
+		db_input.getline(bufptr,BUFFERSIZE);
+		tmpNum=atoi(bufptr);						// grab buffer as integer
+		tmpTreeItm.gamesWon=tmpNum;			// fill this node's number of games 
+														// won with the total for that school
+		current[index]=tmpTreeItm;
+		index++;
+	}
+	// sort the tree alphabetically in order a to z
+	selectionSort(current,index);
+	// inject the sorted array into a balance binary search tree and return the
+	//pointer to the root of the tree to the caller of this funtion
+	return  makeTree(current,0,index-1);
+}
+//****************************************************************************
+//Menu for user interaction.
+void displayMenu()
+{
+	cout<<"** NBA Tourney Information Program **";
+	cout<<endl<<"(Enter number of choice and RETURN)";
+	cout<<endl;
+	cout<<endl<<"1)  Print information on a given team.";
+	cout<<endl<<"2)  Tell how many games every team in a given division has won.";
+	cout<<endl<<"3)  Tell which teams won > n games.";
+	cout<<endl<<"4)  Print all information via postorder traversal.";
+	cout<<endl<<"5)  Print all information via preorder traversal.";
+	cout<<endl<<"6)  Print depth of the tree.";
+	cout<<endl<<"7)  Quit the program."<<endl;
+}
+//*****************************************************************************
+
+int main(int argc, char *argv[])
+{
+   TreePtr root;
+   ifstream db_input;
+	bool finished = false; // Used to terminate menu.
+	bool done = false;
+	int choice;	// Choice for menu for user interaction.
+	int choice2;// Choice for option two in user interaction.
+	string choice3;// Choice for option three in user interaction.
+	string userOutPut; // Formatted input for option 1 w/ user interaction.
+	char buffer[BUFFERSIZE];
+
+// Open input file based on second command line argument
+   db_input.open(argv[2]);
+
+// Invoke proper DB initialization based on first command line argument
+
+   if (atoi(argv[1]) == 1) // Read file from
+   {
+     root = fileInit(db_input);
+   }
+   else
+   {
+     root = sortInit(db_input);
+   }
+	
+	while(!finished) // Not done.
+	{
+	
+	displayMenu(); // Menu for user interaction.
+	cin.getline(buffer,BUFFERSIZE);
+	choice = atoi(buffer);
+	
+	switch(choice)
+		{
+			case 1:// Option 1: Print information on a given team.
+			{
+				userOutPut = "Enter a teams name to see its data.";
+				teamInfo(root,getInput(userOutPut),done);
+				printSpacer();
+				break;
+			}
+			case 2:// Option 2: How many games a team in a given division has won.
+			{ 
+				userOutPut = "Enter a division";
+				divisionWins (root, getInput(userOutPut));
+				printSpacer();			
+				break;
+			}
+			case 3: // Option 3: Tell which teams won > n games.
+			{ 
+				cout<<"Enter an amount of wins. "<<endl;
+				cin>>choice2;	
+				gamesWon(root,choice2);
+				printSpacer();
+				break;
+			}
+			case 4: // Option 4: Print all information via postorder traversal
+			{
+				postOrderTraverse(root);
+				printSpacer();
+				break;
+			}
+			case 5:// Option 5: Print all information via preorder traversal 
+			{   
+				preOrderTraverse(root);  
+				printSpacer();
+				break;
+			}
+			case 6:// Option 6: Print depth of the tree
+			{ 
+				int answer = treeHeight(root);
+				cout<<"The depth of the tree is "<<answer<<"."<<endl<<endl;
+				printSpacer();
+				break;
+			}
+			case 7:// Option 7: Quit the program.
+			{ 
+				finished=true;
+				break;
+			}
+		}	
+	}
+   return 0;
+}

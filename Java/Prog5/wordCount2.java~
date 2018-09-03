@@ -1,0 +1,223 @@
+public class WordCount2
+{
+
+	public static final int TABLESIZE =587;
+	public static LinkedList<String,WordItem> hashTable = new LinkedList[TABLESIZE];
+	
+	public static int hash(String word)
+	{
+		int i;
+		int addr =0;
+		for( i=0; i<word.length(); i++)
+		{
+			addr += (int) word.charAt(i);
+		}
+		
+		return addr % TABLESIZE;
+	}
+	
+	public static String wordCopy(String line, int firstPos, int lastPos)
+	{
+		StringBuffer word = new StringBuffer();
+		word.append( line.substring(firstPos, lastPos+1));
+		for(int i =0; i < word.length();i++)
+		{	
+			word.setCharAt(i, Character.toLowerCase(word.charAt(i)));
+		}
+		
+		return word.toString();
+	}
+	
+	public static void insertWork( String word)
+	{
+		int theHash = hash(word);
+		WordItem theWord = new WordItem(word);
+		
+		ListIterator<WordItem> it = hashTable[theHash].listIterator(0);
+		while(it.hasNext())
+		{
+			WordItem nextElement = (WordItem) it.next();
+			if( nextElement.getWord().equals(word))
+			{
+				nextElement.incCount();
+				return;
+			}
+		}
+		
+		hashTable[theHash].add(theWord);
+	}
+	
+	public static WordItem mostFrequent()
+	{
+		WordItem mostFrequent = new WordItem();
+		for ( int i = 0; i < TABLESIZE; i++)
+		{
+			ListIterator<WordItem> it = hashTable[i].listIterator(0);
+			
+			while( it.hasNext())
+			{
+				WordItem nextElement = (WordItem) it.next();
+				if ( mostFrequent.getCount() < nextElement.getCount())
+				{
+					mostFrequentWord = nextElement;
+				}
+			}
+		}
+		
+		return mostFrequentWord;
+	}
+	
+	public static void remove( WordItem w)
+	{
+	
+		int theHash = hash(w.getWord());
+		ListIterator<WordItem> it = hashTable[theHash].listIterator(0);
+		
+		while( it.hasNext())
+		{
+			WordItem nextElement = (WordItem) it.next();
+			
+			if(nextElement.getWord().equals(w.getWord()))
+			{
+				it.remove();
+				return;
+			}
+		}
+	}
+	
+	public static int uniqueWordCount()
+	{
+		int total = 0;
+		for(int i = 0; i < TABLESIZE; i++)
+		{
+			total += hashTable[i].size();
+		}
+		
+		return total;
+	}
+	
+	public static int longestChainLength()
+	{
+	
+		int longest = 0;
+		for( int i = 0; i< TABLESIZE; i++)
+		{
+			if( longest < hashTable[i].size())
+			{
+				longest = hashTable[i].size();
+			}
+		}
+		
+		return longest;
+	}
+	
+	public static void print()
+	{
+		for( int i =0; i<TABLESIZE; i++)
+		{
+			ListIterator<WordItem> it = hashTable[i].listIterator(0);
+			while( it.hasNext())
+			{
+				WordItem nextElement = (WordItem) it.next();
+				System.out.print(nextElement.getWord() +":"+ nextElement.getCount() +",");
+			}
+			System.out.println();
+		}
+	}
+	
+	public static void processLine(String line)
+	{
+		boolean inWord = false;
+		int firstPos = 0;
+		int lastPos = 0;
+		
+		for(int i =0; i < line.length(); i++)
+		{
+			char ch = line.charAt(i);
+			if(!inWord && Character.isLetter(ch))
+			{
+				inWord = true;
+				firstPos = i;
+				lastPos = i;
+				continue;
+			}
+			
+			if( inword && ch == '\'' && (i > 0 && i < line.length()-1) && (Character.isLetter(line.charAt(i-1))&& Character.isLetter(line.charAt(i+1))))
+			{
+				lastPos++;
+				continue;
+			}
+			
+			if(inWord && Character.isLetter(ch))
+			{
+				lastPos++;
+				continue;
+			}
+			
+			if( inWord && !Character.isLetter(ch))
+			{
+				inWord = false;
+				insertWord(wordCopy(line,firstPos,lastPos));
+				continue;
+			}
+		}
+		
+		
+		if(inWord)
+		{
+			insertWord(wordCopy(line,firstPos,lastPos));
+		}
+	}
+	
+	public static void main( String[] args)
+	{
+		for(int i = 0; i < TABLESIZE; i++)
+		{
+			hashTable[i] = new LinkedList<WordItem>();
+		}
+		
+		File inFile = new File(args[0]);
+		int numWords = Integer.parseInt(args[1]);
+		
+		try
+		{
+			Scanner keyboard = new Scanner(inFile);
+			String line;
+			
+			while( keyboard.hasNext())
+			{
+				line = keyboard.nextLine();
+				processLine(line);
+			}
+		}
+		
+		catch(FileNotFoundException e)
+		{
+			System.out.println(e);
+			return;
+		}
+		
+		int numberUniqueWords = uniqueWordCount();
+		int longest = longestChainLength();
+		
+		System.out.println( "The "+ numWords +" most frequently occurring words were:");
+		
+		for(int i =1; i <= numWords; i++)
+		{
+			WordItem w = mostFrequent();
+			String theWord = w.getWord();
+			int theCount = w.getCount();
+			
+			System.out.println( i + ". "+ theWord + "occured "+ theCount + " times");
+			
+			remove(w);
+		}
+		
+		System.out.println();
+		System.out.println("There were a total of "+ numberUniqueWords + " unique words!");
+		System.out.println("The longest chain was " + longest);
+		
+	}
+}
+
+			

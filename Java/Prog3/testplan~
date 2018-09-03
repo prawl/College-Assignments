@@ -1,0 +1,185 @@
+/*
+	Patrick Rawlings
+	CSCI 3310 Section 1
+	Fall 2011
+	Program 4: Test Plan
+	9/15/11
+
+
+//*****************************************************************************
+	This test was used to validate the the grow function was successfully
+	growing a 1 file.
+
+
+Test Case 1:
+INPUT: 
+c 1  10
+p 1  0
+g 1 10
+p 1 0
+p -1 0
+x 0  0
+
+OUTPUT:
+File 1 created, size = 10
+Sector usage for file 1 --- size = 10 characters.
+Start Sector End Sector
+0             3
+File 1 increased by 10 characters, new size = 20
+Sector usage for file 1 --- size = 20 characters.
+Start Sector End Sector
+0             3
+4             6
+
+Contents of Sectors List
+Start Sector  End Sector
+7             29
+SIMULATOR EXIT: File 1 files exist, occupying 7 sectors.
+
+
+
+//******************************************************************************
+	This test was used to validate that the shrink function would successfully
+	shrink 1 file.
+
+Test Case 2:
+INPUT:
+c 1  10
+p 1  0
+s 1 10
+p 1 0
+p -1 0
+x 0  0
+
+OUTPUT:
+File 1 created, size = 10
+Sector usage for file 1 --- size = 10 characters.
+Start Sector End Sector
+0             3
+File 1 decreased by 10 characters, new size = 0
+Sector usage for file 1 --- size = 0 characters.
+Start Sector End Sector
+
+Contents of Sectors List
+Start Sector  End Sector
+0             3
+4             29
+SIMULATOR EXIT: File 1 files exist, occupying 0 sectors.
+      
+
+//******************************************************************************
+	Test case was used to demonstrate if you grow past max size.
+		
+
+Test Case 3:
+INPUT:
+c 1  10
+p 1  0
+g 1 99
+p 1 0
+p -1 0
+x 0  0
+
+OUTPUT: 
+File 1 created, size = 10
+Sector usage for file 1 --- size = 10 characters.
+Start Sector End Sector
+0             3
+Error! File 1 cannot grow larger than the size of the disk. Command skipped.
+
+Sector usage for file 1 --- size = 10 characters.
+Start Sector End Sector
+0             3
+
+Contents of Sectors List
+Start Sector  End Sector
+4             29
+SIMULATOR EXIT: File 1 files exist, occupying 4 sectors
+
+
+//******************************************************************************
+	Test case to demonstrate if you shirink past the size of the file.
+
+Test Case 3:
+INPUT:
+c 1  10
+p 1  0
+s 1 12
+p 1 0
+p -1 0
+x 0  0
+
+
+OUTPUT:
+File 1 created, size = 10
+Sector usage for file 1 --- size = 10 characters.
+Start Sector End Sector
+0             3
+Error! File 1 cannot be shrunk greater than the size of the file!
+Sector usage for file 1 --- size = 10 characters.
+Start Sector End Sector
+0             3
+
+Contents of Sectors List
+Start Sector  End Sector
+4             29
+SIMULATOR EXIT: File 1 files exist, occupying 4 sectors.
+
+
+      
+
+//*****************************************************************************
+	Test case to demonstrate large input files.  Used to to detect if any errors 
+	occured. Errors were found, this is the corrected version.
+
+Test Case 4:
+INPUT:
+c 1 10
+p 1 0
+g 1 10
+p 1 0
+g 1 2
+p 1 0
+c 2 10
+p 2 0
+g 1 2
+p 1 0
+p -1 0
+x 0 0
+
+OUTPUT:
+File 1 created, size = 10
+Sector usage for file 1 --- size = 10 characters.
+Start Sector End Sector
+0             3
+File 1 increased by 10 characters, new size = 20
+Sector usage for file 1 --- size = 20 characters.
+Start Sector End Sector
+0             3
+4             6
+File 1 increased by 2 characters, new size = 22
+Sector usage for file 1 --- size = 22 characters.
+Start Sector End Sector
+0             3
+4             6
+7             7
+File 2 created, size = 10
+Sector usage for file 2 --- size = 10 characters.
+Start Sector End Sector
+8             11
+File 1 increased by 2 characters, new size = 24
+Sector usage for file 1 --- size = 24 characters.
+Start Sector End Sector
+0             3
+4             6
+7             7
+
+Contents of Sectors List
+Start Sector  End Sector
+12            29
+SIMULATOR EXIT: File 2 files exist, occupying 12 sectors.
+//*****************************************************************************
+	T
+*/
+
+ 

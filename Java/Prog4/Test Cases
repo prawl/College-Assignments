@@ -1,0 +1,147 @@
+/*
+	Patrick Rawlings
+	CSCI 3310 Section 1
+	Fall 2011
+	Program 4: Test Plan
+	9/15/11
+
+
+//*****************************************************************************
+
+
+
+Test Case 1:
+INPUT: 
+C = -13
+X=5
+H = 25
+D=4
+$PART2
+C-(B+(C+(A-E)))-X
+(D+C)-(H*X-C)
+(A-H)/(D+B)
+A*H+C
+
+
+OUTPUT:
+Infix: C-(B+(C+(A-E)))-X
+Postfix: CBCAE-++-X-
+Result: -3
+Infix: (D+C)-(H*X-C)
+Postfix: DC+HX*C--
+Result: -147
+Infix: (A-H)/(D+B)
+Postfix: AH-DB+/
+Result: -4
+Infix: A*H+C
+Postfix: AH*C+
+Result: 12
+
+//******************************************************************************
+
+Test Case 2:
+INPUT:
+C = -13
+X = 5
+$PART2
+C-(B+(C+(A-E)))-X
+A*D*C+A
+(D+C)-(H*X-C)
+(A-H)/(D+B)
+A*H+C
+
+
+OUTPUT:
+Infix: C-(B+(C+(A-E)))-X
+Postfix: CBCAE-++-X-
+Result: -3
+Infix: A*D*C+A
+Postfix: AD*C*A+
+Result: -51
+Infix: (D+C)-(H*X-C)
+Postfix: DC+HX*C--
+Result: -62
+Infix: (A-H)/(D+B)
+Postfix: AH-DB+/
+Result: -1
+Infix: A*H+C
+Postfix: AH*C+
+Result: -5
+
+      
+
+//******************************************************************************
+	Test case was used to demonstrate if you grow past max size.
+		
+
+Test Case 3:
+INPUT:
+$PART2
+C-(B+(C+(A-E)))-X
+A*D*C+A
+(D+C)-(H*X-C)
+(A-H)/(D+B)
+A*H+C
+
+
+OUTPUT: 
+Infix: C-(B+(C+(A-E)))-X
+Postfix: CBCAE-++-X-
+Result: -22
+Infix: A*D*C+A
+Postfix: AD*C*A+
+Result: 13
+Infix: (D+C)-(H*X-C)
+Postfix: DC+HX*C--
+Result: -182
+Infix: (A-H)/(D+B)
+Postfix: AH-DB+/
+Result: -1
+Infix: A*H+C
+Postfix: AH*C+
+Result: 11
+
+
+
+//******************************************************************************
+	Test case to demonstrate if you shirink past the size of the file.
+
+Test Case 3:
+INPUT:
+A = 100
+C = 2
+E = 20
+$PART2
+C-(B+(C+(A-E)))-X
+A*D*C+A
+(A-D)*(E-C)
+(D+C)-(H*X-C)
+(A-H)/(D+B)
+A*H+C
+
+
+OUTPUT:
+Infix: C-(B+(C+(A-E)))-X
+Postfix: CBCAE-++-X-
+Result: -106
+Infix: A*D*C+A
+Postfix: AD*C*A+
+Result: 900
+Infix: (A-D)*(E-C)
+Postfix: AD-EC-*
+Result: 1728
+Infix: (D+C)-(H*X-C)
+Postfix: DC+HX*C--
+Result: -184
+Infix: (A-H)/(D+B)
+Postfix: AH-DB+/
+Result: 15
+Infix: A*H+C
+Postfix: AH*C+
+Result: 802
+
+//*****************************************************************************
+
+*/
+
+ 

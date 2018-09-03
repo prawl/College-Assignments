@@ -1,0 +1,37 @@
+Tom Roth
+Jonathan Hayes
+Patrick Rawlings
+
+
+a) 
+p.getCofficient(0) = 9
+//This ADT operation will find and display the constant term 
+//for x^0 term. 
+b) 
+//In this algorithm, index represents the starting exponent, 0, and as long as
+//index is less than or equal to the greatest exponent it will keep incrementing.
+//To find the greatest exponent you have to use the p.degree().
+//Within the loop, it uses p.getCoefficient to find the coefficient of the 
+//current exponent and multiplies it by 5, and uses p.changeCoefficient to 
+//change the coefficient to the new number.
+
+for(int index = 0; index =< p.degree(); index++)
+{
+	p.changeCoefficient(5*p.getCoefficient(index),index);
+}
+
+d)
+//In this problem you have to change each variable to its derivative
+//Index represents the starting exponent, 0, and as long as index is less than 
+//or equal to the greatest exponent, it will keep incrementing.
+//To find the greatest exponenet you have to use the p.degree().
+//Within the loop it uses. p.changeCoefficient to change the coefficient and the
+//exponent. It uses p.getCoefficient to find the coefficient of the current 
+//exponent then multiplies it by the current degree, then decreases the current
+//degree by one, then moves on to the next exponent.
+
+for(int index = 0; index =< p.degree(); index++)
+{
+	p.changeCoefficient(P.getCoefficient(index) * index, index-1)
+}
+

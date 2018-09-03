@@ -1,0 +1,78 @@
+
+#include <iostream>
+#include <fstream>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include<iostream>
+using namespace std;
+
+main(int argc, char *argv[]){
+
+string input_line;
+
+for(int c=0; c<argc; c++){
+cout << "argc is " << argc << endl;	
+cout << argv << endl;
+}
+
+/*
+  while(cin) {
+    getline(cin, input_line);
+    cout << input_line << endl;
+  };
+*/
+
+/*
+int whole;
+//char temp;
+ifstream file;
+file.open("data2.txt");
+
+char spells[16]={'0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f'};
+
+
+
+while(!file.eof())
+	{	
+		
+		
+		file >> whole;
+		
+		//cout<<whole<<endl;
+		
+
+	}
+	
+	cout<<whole<<endl;
+	//cout<<whole.length()<<endl;
+	//cout<<whole.at(1)<<endl;
+	file.close();
+	int number;
+	int remainder;
+	number=whole;
+	//cout<<spells[10]<<endl;
+	string hex;
+	string temp;
+	
+	
+	while(number!=0)
+		{
+		remainder=number%16;
+		number=number/16;
+		temp=spells[remainder];
+		hex=temp+hex;
+		}//end of while
+	
+		cout<<hex<<endl;
+		
+		
+/*
+for(int b = 0; b < whole.length(); b++){
+    cout << array[b]<<endl;
+}
+
+*/
+
+}//end main
+

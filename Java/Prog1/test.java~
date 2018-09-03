@@ -1,0 +1,16 @@
+
+import java.io.*;
+import java.util.*;
+
+public class test
+{
+
+public static void main (String[] args)
+{
+	Scanner keyboard = new Scanner (System.in);
+	String temp;		
+	System.out.println("Hello World!");
+	temp = keyboard.nextInt();
+	System.out.println(temp);
+}
+}

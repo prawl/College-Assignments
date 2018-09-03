@@ -1,0 +1,152 @@
+!SESSION 2010-09-13 11:04:34.629 -----------------------------------------------
+eclipse.buildId=I20070625-1500
+java.version=1.6.0
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=en_US
+Command-line arguments:  -os linux -ws gtk -arch x86_64
+
+!ENTRY org.eclipse.osgi 4 0 2010-09-13 11:04:35.400
+!MESSAGE Application error
+!STACK 1
+java.lang.UnsatisfiedLinkError: no swt-pi-gtk-3346 or swt-pi-gtk in swt.library.path, java.library.path or the jar file
+	at org.eclipse.swt.internal.Library.loadLibrary(Library.java:219)
+	at org.eclipse.swt.internal.Library.loadLibrary(Library.java:151)
+	at org.eclipse.swt.internal.gtk.OS.<clinit>(OS.java:22)
+	at org.eclipse.swt.internal.Converter.wcsToMbcs(Converter.java:63)
+	at org.eclipse.swt.internal.Converter.wcsToMbcs(Converter.java:54)
+	at org.eclipse.swt.widgets.Display.<clinit>(Display.java:128)
+	at org.eclipse.ui.internal.Workbench.createDisplay(Workbench.java:482)
+	at org.eclipse.ui.PlatformUI.createDisplay(PlatformUI.java:161)
+	at org.eclipse.ui.internal.ide.application.IDEApplication.createDisplay(IDEApplication.java:133)
+	at org.eclipse.ui.internal.ide.application.IDEApplication.start(IDEApplication.java:86)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:153)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:106)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:76)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:363)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:176)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:616)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:504)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:443)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1169)
+	at org.eclipse.equinox.launcher.Main.main(Main.java:1144)
+
+!ENTRY org.eclipse.osgi 2 0 2010-09-13 11:04:35.421
+!MESSAGE One or more bundles are not resolved because the following root constraints are not resolved:
+!SUBENTRY 1 org.eclipse.osgi 2 0 2010-09-13 11:04:35.421
+!MESSAGE Bundle update@plugins/org.eclipse.ant.ui_3.2.100.v20070511.jar was not resolved.
+!SUBENTRY 2 org.eclipse.ant.ui 2 0 2010-09-13 11:04:35.421
+!MESSAGE Missing required bundle org.eclipse.jdt.ui_[3.2.0,4.0.0).
+!SUBENTRY 2 org.eclipse.ant.ui 2 0 2010-09-13 11:04:35.421
+!MESSAGE Missing required bundle org.eclipse.jdt.core_[3.2.0,4.0.0).
+!SUBENTRY 2 org.eclipse.ant.ui 2 0 2010-09-13 11:04:35.421
+!MESSAGE Missing required bundle org.eclipse.jdt.launching_[3.2.0,4.0.0).
+!SUBENTRY 2 org.eclipse.ant.ui 2 0 2010-09-13 11:04:35.421
+!MESSAGE Missing required bundle org.eclipse.jdt.debug.ui_[3.2.0,4.0.0).
+!SUBENTRY 1 org.eclipse.osgi 2 0 2010-09-13 11:04:35.421
+!MESSAGE Bundle update@plugins/org.eclipse.rcp.source.linux.gtk.x86_64_3.3.0.v20070607-8y8eE8NEbsN3X_fjWS8HPNG/ was not resolved.
+!SUBENTRY 2 org.eclipse.rcp.source.linux.gtk.x86_64 2 0 2010-09-13 11:04:35.421
+!MESSAGE Missing host org.eclipse.rcp.source_3.3.0.v20070607-8y8eE8NEbsN3X_fjWS8HPNG.
+!SUBENTRY 1 org.eclipse.osgi 2 0 2010-09-13 11:04:35.422
+!MESSAGE Bundle update@plugins/org.eclipse.platform.source.linux.gtk.x86_64_3.3.0.v20070612-_19UEkLEzwsdF9jSqQ-G/ was not resolved.
+!SUBENTRY 2 org.eclipse.platform.source.linux.gtk.x86_64 2 0 2010-09-13 11:04:35.422
+!MESSAGE Missing host org.eclipse.platform.source_3.3.0.v20070612-_19UEkLEzwsdF9jSqQ-G.
+
+!ENTRY org.eclipse.osgi 2 0 2010-09-13 11:04:35.429
+!MESSAGE The following is a complete list of bundles which are not resolved, see the prior log entry for the root cause if it exists:
+!SUBENTRY 1 org.eclipse.osgi 2 0 2010-09-13 11:04:35.429
+!MESSAGE Bundle update@plugins/org.eclipse.platform.source.linux.gtk.x86_64_3.3.0.v20070612-_19UEkLEzwsdF9jSqQ-G/ [72] was not resolved.
+!SUBENTRY 2 org.eclipse.platform.source.linux.gtk.x86_64 2 0 2010-09-13 11:04:35.429
+!MESSAGE Missing host org.eclipse.platform.source_3.3.0.v20070612-_19UEkLEzwsdF9jSqQ-G.
+!SUBENTRY 1 org.eclipse.osgi 2 0 2010-09-13 11:04:35.429
+!MESSAGE Bundle update@plugins/org.eclipse.rcp.source.linux.gtk.x86_64_3.3.0.v20070607-8y8eE8NEbsN3X_fjWS8HPNG/ [80] was not resolved.
+!SUBENTRY 2 org.eclipse.rcp.source.linux.gtk.x86_64 2 0 2010-09-13 11:04:35.429
+!MESSAGE Missing host org.eclipse.rcp.source_3.3.0.v20070607-8y8eE8NEbsN3X_fjWS8HPNG.
+!SUBENTRY 1 org.eclipse.osgi 2 0 2010-09-13 11:04:35.429
+!MESSAGE Bundle update@plugins/org.eclipse.ant.ui_3.2.100.v20070511.jar [81] was not resolved.
+!SUBENTRY 2 org.eclipse.ant.ui 2 0 2010-09-13 11:04:35.429
+!MESSAGE Missing required bundle org.eclipse.jdt.ui_[3.2.0,4.0.0).
+!SUBENTRY 2 org.eclipse.ant.ui 2 0 2010-09-13 11:04:35.429
+!MESSAGE Missing required bundle org.eclipse.jdt.debug.ui_[3.2.0,4.0.0).
+!SUBENTRY 2 org.eclipse.ant.ui 2 0 2010-09-13 11:04:35.429
+!MESSAGE Missing required bundle org.eclipse.jdt.launching_[3.2.0,4.0.0).
+!SUBENTRY 2 org.eclipse.ant.ui 2 0 2010-09-13 11:04:35.429
+!MESSAGE Missing required bundle org.eclipse.jdt.core_[3.2.0,4.0.0).
+!SESSION 2010-09-13 11:33:11.688 -----------------------------------------------
+eclipse.buildId=I20070625-1500
+java.version=1.6.0
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=en_US
+Command-line arguments:  -os linux -ws gtk -arch x86_64
+
+!ENTRY org.eclipse.osgi 4 0 2010-09-13 11:33:12.364
+!MESSAGE Application error
+!STACK 1
+java.lang.UnsatisfiedLinkError: no swt-pi-gtk-3346 or swt-pi-gtk in swt.library.path, java.library.path or the jar file
+	at org.eclipse.swt.internal.Library.loadLibrary(Library.java:219)
+	at org.eclipse.swt.internal.Library.loadLibrary(Library.java:151)
+	at org.eclipse.swt.internal.gtk.OS.<clinit>(OS.java:22)
+	at org.eclipse.swt.internal.Converter.wcsToMbcs(Converter.java:63)
+	at org.eclipse.swt.internal.Converter.wcsToMbcs(Converter.java:54)
+	at org.eclipse.swt.widgets.Display.<clinit>(Display.java:128)
+	at org.eclipse.ui.internal.Workbench.createDisplay(Workbench.java:482)
+	at org.eclipse.ui.PlatformUI.createDisplay(PlatformUI.java:161)
+	at org.eclipse.ui.internal.ide.application.IDEApplication.createDisplay(IDEApplication.java:133)
+	at org.eclipse.ui.internal.ide.application.IDEApplication.start(IDEApplication.java:86)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:153)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:106)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:76)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:363)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:176)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:616)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:504)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:443)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1169)
+	at org.eclipse.equinox.launcher.Main.main(Main.java:1144)
+
+!ENTRY org.eclipse.osgi 2 0 2010-09-13 11:33:12.413
+!MESSAGE One or more bundles are not resolved because the following root constraints are not resolved:
+!SUBENTRY 1 org.eclipse.osgi 2 0 2010-09-13 11:33:12.415
+!MESSAGE Bundle update@plugins/org.eclipse.platform.source.linux.gtk.x86_64_3.3.0.v20070612-_19UEkLEzwsdF9jSqQ-G/ was not resolved.
+!SUBENTRY 2 org.eclipse.platform.source.linux.gtk.x86_64 2 0 2010-09-13 11:33:12.415
+!MESSAGE Missing host org.eclipse.platform.source_3.3.0.v20070612-_19UEkLEzwsdF9jSqQ-G.
+!SUBENTRY 1 org.eclipse.osgi 2 0 2010-09-13 11:33:12.415
+!MESSAGE Bundle update@plugins/org.eclipse.ant.ui_3.2.100.v20070511.jar was not resolved.
+!SUBENTRY 2 org.eclipse.ant.ui 2 0 2010-09-13 11:33:12.415
+!MESSAGE Missing required bundle org.eclipse.jdt.debug.ui_[3.2.0,4.0.0).
+!SUBENTRY 2 org.eclipse.ant.ui 2 0 2010-09-13 11:33:12.415
+!MESSAGE Missing required bundle org.eclipse.jdt.core_[3.2.0,4.0.0).
+!SUBENTRY 2 org.eclipse.ant.ui 2 0 2010-09-13 11:33:12.415
+!MESSAGE Missing required bundle org.eclipse.jdt.ui_[3.2.0,4.0.0).
+!SUBENTRY 2 org.eclipse.ant.ui 2 0 2010-09-13 11:33:12.415
+!MESSAGE Missing required bundle org.eclipse.jdt.launching_[3.2.0,4.0.0).
+!SUBENTRY 1 org.eclipse.osgi 2 0 2010-09-13 11:33:12.415
+!MESSAGE Bundle update@plugins/org.eclipse.rcp.source.linux.gtk.x86_64_3.3.0.v20070607-8y8eE8NEbsN3X_fjWS8HPNG/ was not resolved.
+!SUBENTRY 2 org.eclipse.rcp.source.linux.gtk.x86_64 2 0 2010-09-13 11:33:12.415
+!MESSAGE Missing host org.eclipse.rcp.source_3.3.0.v20070607-8y8eE8NEbsN3X_fjWS8HPNG.
+
+!ENTRY org.eclipse.osgi 2 0 2010-09-13 11:33:12.423
+!MESSAGE The following is a complete list of bundles which are not resolved, see the prior log entry for the root cause if it exists:
+!SUBENTRY 1 org.eclipse.osgi 2 0 2010-09-13 11:33:12.423
+!MESSAGE Bundle update@plugins/org.eclipse.platform.source.linux.gtk.x86_64_3.3.0.v20070612-_19UEkLEzwsdF9jSqQ-G/ [72] was not resolved.
+!SUBENTRY 2 org.eclipse.platform.source.linux.gtk.x86_64 2 0 2010-09-13 11:33:12.423
+!MESSAGE Missing host org.eclipse.platform.source_3.3.0.v20070612-_19UEkLEzwsdF9jSqQ-G.
+!SUBENTRY 1 org.eclipse.osgi 2 0 2010-09-13 11:33:12.423
+!MESSAGE Bundle update@plugins/org.eclipse.rcp.source.linux.gtk.x86_64_3.3.0.v20070607-8y8eE8NEbsN3X_fjWS8HPNG/ [80] was not resolved.
+!SUBENTRY 2 org.eclipse.rcp.source.linux.gtk.x86_64 2 0 2010-09-13 11:33:12.423
+!MESSAGE Missing host org.eclipse.rcp.source_3.3.0.v20070607-8y8eE8NEbsN3X_fjWS8HPNG.
+!SUBENTRY 1 org.eclipse.osgi 2 0 2010-09-13 11:33:12.423
+!MESSAGE Bundle update@plugins/org.eclipse.ant.ui_3.2.100.v20070511.jar [81] was not resolved.
+!SUBENTRY 2 org.eclipse.ant.ui 2 0 2010-09-13 11:33:12.423
+!MESSAGE Missing required bundle org.eclipse.jdt.ui_[3.2.0,4.0.0).
+!SUBENTRY 2 org.eclipse.ant.ui 2 0 2010-09-13 11:33:12.423
+!MESSAGE Missing required bundle org.eclipse.jdt.debug.ui_[3.2.0,4.0.0).
+!SUBENTRY 2 org.eclipse.ant.ui 2 0 2010-09-13 11:33:12.423
+!MESSAGE Missing required bundle org.eclipse.jdt.launching_[3.2.0,4.0.0).
+!SUBENTRY 2 org.eclipse.ant.ui 2 0 2010-09-13 11:33:12.423
+!MESSAGE Missing required bundle org.eclipse.jdt.core_[3.2.0,4.0.0).

@@ -1,0 +1,87 @@
+/* 
+	Patrick Rawlings
+	CSCI 3310 Section 1
+	Fall 2011
+	Program 1
+	9/15/11
+
+	Definition of GroceryItem class.  A grocery item consist of a product 
+	number(11012), a description of said product(gallon-milk),the price of the 
+	product(3.99), and tax which holds either a 'F' or 'N' standing for Food
+	item or Non-Food item. Ex:  11012 gallon-milk 3.99 F
+
+	ASSUMPTIONS:
+	
+	1. There will be 1 to 100 items within the inventory.  
+*/
+
+import java.io.*;
+import java.util.*;
+
+public class GroceryItem
+{
+	private int productNum;			// product ID number..
+	private String description;	// name of grocery item.
+	private double price;			// cost of grocery item.
+	private char tax;					// F - for food items; N - non-food items.
+		
+	// accessor methods
+	public int getProductNum() {return productNum;}
+	public String getDescription() {return description;}
+	public double getPrice() {return price;}
+	public char getTax() {return tax;}
+
+//*****************************************************************************
+/* public void readItem(Sanner keyboard) reads in the information for one 
+	grocery item from the input device keybaord.  Input format is assumed to
+	be the following:
+	
+	11012 gallon-milk 3.99 F
+	
+*/
+public void readItem (Scanner keyboard)
+	{
+	productNum = keyboard.nextInt();
+	description = keyboard.next();
+	price = keyboard.nextDouble();
+	tax = keyboard.next().charAt(0);
+	keyboard.nextLine();				// reset keyboard to next input line.
+	} 
+
+//*****************************************************************************
+/* public static void printInventory(GroceryItem [] input, int size) prints 
+	the information for input[i], 0 <= i < size.
+*/
+
+public static void printInventory (GroceryItem [] input, int size)
+	{
+		for(int i = 0; i < size; i++)
+		{
+				System.out.println(input[i].getProductNum() +" "
+				+ input[i].getDescription() +" "+ 			
+				input[i].getPrice() +" "+ input[i].getTax());
+		}//end for
+	}
+
+//*****************************************************************************
+/* public static int itemSearch (GroceryItem [] data, int size, int productID)
+	searches through an array specified by the input in data[index] where
+	index is 0 < index < size and comapares each value with productID and 
+	returns -1 if the item is not in the array and the index of the position
+	if the item is in the array.
+
+*/
+public static int itemSearch (GroceryItem [] data, int size, int productID)
+	{
+		for(int index = 0; index < size; index++)
+		{  	
+			if(data[index].getProductNum() == productID)
+			{
+				return index;
+			}//end if		
+		}//end for
+	return -1;
+	}
+
+//*****************************************************************************
+} // end class GroceryItem

@@ -1,0 +1,147 @@
+/*
+	Patrick Rawlings
+	CSCI 3310 Section 1
+	Fall 2011
+	Program 1: Test Plan
+	9/15/11
+
+
+//*****************************************************************************
+	This test was used to validate that the seperation of customers and end of 
+	file would successfully reached.  
+
+
+Test Case 1:
+INPUT:
+
+20115 1
+0     0
+20115 1
+11014 2
+30007 4
+0     0
+
+OUTPUT:
+Customer 1
+
+ laundry-soap  1  @ 5.60   5.60 N
+
+     Subtotal              5.60
+          Tax              0.45
+
+        Total              6.05
+Customer 2
+
+ laundry-soap  1  @ 5.60   5.60 N
+       butter  2  @ 2.59   5.18 F
+ paper-towels  4  @ 0.99   3.96 N
+
+     Subtotal             14.74
+          Tax              0.87
+
+        Total             15.61
+
+
+//******************************************************************************
+	This test was used to show that if an amount was not within the specified 
+	range the program would flag and output the error to the user.
+
+Test Case 2:
+INPUT:
+
+20115 999
+0     0
+20115 1
+11014 -1
+30007 4
+0     0
+
+OUTPUT:
+
+Customer 1
+
+
+Error! 999 is not within the specified range (1-100)
+
+
+     Subtotal              0.00
+          Tax              0.00
+
+        Total              0.00
+Customer 2
+
+ laundry-soap  1  @ 5.60   5.60 N
+
+Error! -1 is not within the specified range (1-100)
+
+ paper-towels  4  @ 0.99   3.96 N
+
+     Subtotal              9.56
+          Tax              0.76
+
+        Total             10.32
+
+
+
+
+//******************************************************************************
+	Test case to show that if a duplicate item was entered in the inventory file.
+	The program 
+		
+
+Test Case 3:
+INPUT:
+11012 gallon-milk 3.99 F
+11014 butter 2.59 F
+11110 pie-shells 0.99 F
+30005 homestyle-br 1.99 F
+20115 laundry-soap 5.60 N
+30007 paper-towels 0.99 N
+11014 butter 2.59 F
+
+OUTPUT:
+
+Warning! Duplicate items dectected in inventory file! The duplicate item will
+ be ignored.
+
+11012 gallon-milk 3.99 F
+11014 butter 2.59 F
+11110 pie-shells 0.99 F
+30005 homestyle-br 1.99 F
+20115 laundry-soap 5.6 N
+30007 paper-towels 0.99 N
+11014 butter 2.59 F
+
+Customer 1
+
+ laundry-soap  3  @ 5.60  16.80 N
+
+     Subtotal             16.80
+          Tax              1.34
+
+        Total             18.14
+Customer 2
+
+ laundry-soap  1  @ 5.60   5.60 N
+       butter  2  @ 2.59   5.18 F
+ paper-towels  4  @ 0.99   3.96 N
+
+     Subtotal             14.74
+          Tax              0.87
+
+
+//******************************************************************************
+	Test case to show that if inventory.dat file does not exist the program will
+	throw an exception.
+
+Test Case 3:
+INPUT:
+
+javac GrocerySim.java GroceryItem.java
+java GrocerySim < perchases.dat
+
+OUTPUT:
+File not found!       
+
+//*****************************************************************************
+*/

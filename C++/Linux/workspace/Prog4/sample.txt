@@ -1,0 +1,20 @@
+akron
+ohio
+0
+217074
+asheville
+north carolina
+0
+76636
+cleveland
+ohio
+0
+431369
+nashville
+tennessee
+1
+605473
+raleigh
+north carolina
+1
+405612

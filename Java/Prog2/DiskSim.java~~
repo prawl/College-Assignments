@@ -1,0 +1,148 @@
+/*
+	Patrick Rawlings
+	CSCI 3310 Section 1
+	Fall 2011
+	Program 1
+	9/15/11
+
+	Description:
+	I/O format: 
+	Error Handling:
+	ASSUMPTIONS:
+*/
+//*****************************************************************************	
+
+import java.io.*;
+import java.util.*;
+
+public class DiskSim
+{
+private static final int NUM_SECTORS = DiskParam.NUM_SECTORS;// Holds the number of sectors. 30
+private static final int NUM_FILES = DiskParam.NUM_FILES; // Sets upper bound to how many files can be created. 20
+private static final int MAX_SIZE = DiskParam.MAX_SIZE;// Sets upper bound to how many characters can be contained in a file. 25
+private static final int SECTOR_SIZE = DiskParam.SECTOR_SIZE;// Sets upper bound to how many characters each sector can hold. 3
+
+public static List [] file_array = new List [NUM_FILES];//Array 2 in the file list.  This organizes the sectors list.
+public static  List <SectorUsage> openSectors = new List <SectorUsage> ();//Creates a list.This spot is used to hold how many sectors are...
+public static int [] numchars = new int [NUM_FILES]; //Array 1 in the file list. Used to store info about the file. Specifically how many chars in in the file which is used to calculate the size.
+
+public static void main (String[] args){
+
+SectorUsage initial = new SectorUsage(0, NUM_SECTORS - 1);// Sets up 30 sectors
+openSectors.add(1, initial);// adds the 30 sectors to openSectors
+Scanner kbd = new Scanner(System.in);
+
+char opCode; // single character. ('c'opy, 'p'rint, 'd'elete, x - exit)
+int file_id; // an int between 0 and NUM-FILES - 1.
+int size;    // Size of the file. Cannot exceed MAX_SIZE.
+int index = 0;
+
+//System.out.println("Debug: NUM_SECTORS = " + NUM_SECTORS);
+//System.out.println("Debug: NUM_FILES = " + NUM_FILES);
+//System.out.println("Debug: MAX_SIZE = " + MAX_SIZE);
+//System.out.println("Debug: SECTOR_SIZE = " + SECTOR_SIZE);
+
+while (kbd.hasNext())
+{	
+	opCode = kbd.next().charAt(0);	
+	file_id = kbd.nextInt();
+	size = kbd.nextInt();
+	//System.out.println("\n" + opCode + " " + file_id + " "+ size);	
+	
+	switch (opCode) 
+	{
+	case 'c'://Create entry.
+	create(file_id, size);
+	break; 
+
+	case 'p'://Print entry.
+	//print(file_id);
+	break;		
+	
+	case 'd'://Delete entry.
+	break;
+		
+	case 'x'://Exit the program.
+	return;
+	}// end switch
+}//end while
+}//end main
+
+//*****************************************************************************
+public static void create(int file_id, int size){
+ 
+	List <SectorUsage> usage = new List <SectorUsage>(); // creates a new list called usage.
+  	int sectorneeded = 0; 
+	double temp;
+	
+	temp = size/SECTOR_SIZE
+	System.out.println("Debug: temp = " + temp);
+	if((temp % 2 )!= 0){// has a remainder.  Need to add 1. 
+	sectorneeded = (int) (temp +1);
+	}// end if
+	else{
+	sectorneeded =(int) temp;
+	}//end else
+	
+	
+	
+	System.out.println("\nDebug: Initial Stage of Sectors list : " + openSectors.get(1).getStart() + "  " + openSectors.get(1).getEnd());
+	System.out.println("Debug: Calculating how many sectors needed for a file.  Sectors needed = " + sectorneeded);
+  	
+	for(int k = 1; k <= openSectors.size(); k++) {
+      SectorUsage s = openSectors.get(k); // points s to position k of the created sectors
+      int sectorsize = s.getEnd() - s.getStart() +1; // How many open sectors are currently available.
+		System.out.println("Debug: Comparing sectorsize with sectorneeded.");
+      if(sectorsize > sectorneeded){ // There is space to save 
+		System.out.println("Debug: Have space to save.  Saving now.");
+      usage.add(1, new SectorUsage(s.getStart(), s.getStart() + sectorneeded -1));// Save item.
+      s.setStart(sectorneeded + s.getStart()); // Adjust for saved space.  Start is now after the saved data.
+		//System.out.println(usage.get(1).getStart());      
+		sectorneeded = 0;
+      }
+      else{//if sectorsize < sectorneeded.  Not enough space to save
+		System.out.println("Debug: Not enough space to save. Doing something!");
+      usage.add(1,s);
+      openSectors.remove(k--);
+      sectorneeded -= sectorsize;
+      }
+      if(sectorneeded == 0) break;
+  }
+   if(sectorneeded > 0){
+   System.out.println("Theres not enough space");
+   for(int m = 0; m <= usage.size();m++){
+   openSectors.add(1, usage.get(m));
+   return;   
+	}
+   file_array[file_id] = usage;
+   numchars[file_id] = size;
+  }
+
+  }
+//*****************************************************************************
+/*public static void print(int file_id, int [] numchars, int index){ 
+		
+	if(numchars[file_id] == -1){
+	System.out.println("File " + file_id + " non-existent, print command ignored.");
+	}	
+	
+	if(file_id == -1){//Print the contents of the sector list.
+	System.out.println("Contents of Sectors List");
+	System.out.println("Start Sector  End Sector");
+	for(int i=0; i < openSectors.size(); i++){
+		SectorUsage output = openSectors.get(i);
+		output.getStart();
+	}// end for
+
+	}//end if
+	else{
+	System.out.println("\nFile " + file_id + " created, size = " + numchars[file_id]);
+	//System.out.println("Sector usage for file " + file_id + " --- size = " + sizeOutput + " characters.");
+	System.out.println("Start Sector  End Sector");
+	//							Output			Output
+	}
+	
+}//end print
+*/
+//******************************************************************************
+}//end DiskSim
